@@ -1,6 +1,6 @@
 # Breakout
 
-W Kavanagh. June Summer 2024
+W Kavanagh & N Merchant. Summer 2024 
 
 ## controls
 

@@ -111,7 +111,4 @@
       <Filter>Powerups</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="suggestedIssues.txt" />
-  </ItemGroup>
 </Project>
