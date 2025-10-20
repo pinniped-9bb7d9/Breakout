@@ -21,7 +21,8 @@ fire ball (green)
 
 ## Suggested tasks
 
-* Implement mouse input for pad
+* \[DONE] Implement mouse input for paddle
+* Make paddle sensitivity adjustable with mouse wheel
 * GameLoop
 * Better UI (progress bar rather than timer for countdown)
 * Improved VFX (ball trail, paddle hit response, brick particle destruction)
