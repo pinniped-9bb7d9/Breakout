@@ -124,7 +124,6 @@ void GameManager::manageInput(float dt)
         return;
     }
 
-
 }
 
 void GameManager::loseLife()
@@ -148,6 +147,12 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+}
+
+void GameManager::updateMouseSensitivity(float update)
+{
+    // TODO: This is very naive and will definitely break!
+    _mouse_sensitivity = std::clamp(_mouse_sensitivity += update, 0.1f, 2.0f);
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

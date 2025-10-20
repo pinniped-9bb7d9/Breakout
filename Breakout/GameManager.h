@@ -20,6 +20,7 @@ public:
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
+    void updateMouseSensitivity(float update);
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;

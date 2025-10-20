@@ -22,7 +22,15 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            } 
+            
+            else if (event.type == sf::Event::MouseWheelScrolled)
+            {
+                int update = event.mouseWheelScroll.delta;
+                gameManager.updateMouseSensitivity(static_cast<float>(update) * 0.1f);
+            }
         }
 
         deltaTime = clock.restart().asSeconds();
