@@ -15,6 +15,7 @@ public:
     GameManager(sf::RenderWindow* window);
     void initialize();
     void update(float dt);
+    void manageInput(float dt);
     void loseLife();
     void render();
     void levelComplete();
@@ -35,6 +36,10 @@ private:
     int _lives;
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
+    // NOTE: Vector for tracking mouse position
+    sf::Vector2i _window_center;
+    sf::Vector2i _current_mouse_position;
+    float _mouse_sensitivity;
 
     sf::Font _font;
     sf::Text _masterText;

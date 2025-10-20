@@ -6,7 +6,7 @@
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
+    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f), _window_center(0.f, 0.f), _current_mouse_position(0.f, 0.f), _mouse_sensitivity(1.f)
 {
     _font.loadFromFile("font/montS.ttf");
     _masterText.setFont(_font);
@@ -26,6 +26,11 @@ void GameManager::initialize()
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+
+    // NOTE: Set the mouse the center of the window and set the window center variable to this initial mouse position.
+    // This is not updated in the game loop as the window has been made to not be resizeable.
+    sf::Mouse::setPosition(sf::Vector2i(_window->getSize().x / 2.f, _window->getSize().y / 2.f), *_window);
+    _window_center = sf::Mouse::getPosition();
 }
 
 void GameManager::update(float dt)
@@ -77,14 +82,49 @@ void GameManager::update(float dt)
         _timeLastPowerupSpawned = _time;
     }
 
-    // move paddle
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    manageInput(dt);
+
+    sf::Mouse::setPosition(sf::Vector2i(500.f, 400.f), *_window);
+    //_previous_mouse_position = _current_mouse_position;
 
     // update everything 
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
+}
+
+void GameManager::manageInput(float dt)
+{
+    // move paddle
+    //if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
+    //if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+
+    // TODO: move paddle based on mouse input
+    _current_mouse_position = sf::Mouse::getPosition();
+
+
+    if (_current_mouse_position.x == _window_center.x)
+    {
+        return;
+    }
+
+    if (_current_mouse_position.x > _window_center.x)
+    {
+        //_paddle->moveRight(dt * (_current_mouse_position.x - _previous_mouse_position.x));
+        int movement_multiplier = (_current_mouse_position.x - _window_center.x) * _mouse_sensitivity;
+        _paddle->moveRight(dt * movement_multiplier);
+        return;
+    }
+
+    if (_current_mouse_position.x < _window_center.x)
+    {
+        //_paddle->moveLeft(dt * (_previous_mouse_position.x - _current_mouse_position.x));
+        int movement_multiplier = (_window_center.x - _current_mouse_position.x) * _mouse_sensitivity;
+        _paddle->moveLeft(dt * movement_multiplier);
+        return;
+    }
+
+
 }
 
 void GameManager::loseLife()
