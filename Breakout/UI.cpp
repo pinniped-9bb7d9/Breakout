@@ -18,6 +18,7 @@ UI::UI(sf::RenderWindow* window, sf::RenderTexture* screen, int lives, GameManag
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
+	// TODO: Adjust Life UI Location
 	_powerupText.setPosition(800, 10);
 	_powerupText.setFillColor(sf::Color::Cyan);
 	_font.loadFromFile("font/montS.ttf");

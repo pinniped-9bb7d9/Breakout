@@ -5,8 +5,10 @@
 
 #version 130
 
+uniform sampler2D scene;
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform int u_frame;
 
 // amount of seconds for which the glitch loop occurs
 #define DURATION 5.
@@ -71,6 +73,7 @@ float gnoise(vec3 x)
     return 2. * gNoise;
 }
 
+
 // gradient noise in range [0, 1]
 float gnoise01(vec3 x)
 {
@@ -89,16 +92,22 @@ vec2 crt(vec2 uv)
     return .5 * (uv + 1.);
 }
 
+// Reference: https://waelyasmina.net/articles/9-hands-on-glsl-examples-for-shader-newbies/#example_5
+//mat2 scale(vec2 scale) {
+//    return mat2(scale.x, 0., 0., scale.y);
+//}
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+
+void main()
 {
-    vec2 uv = fragCoord / u_resolution.xy;
+    vec2 uv = gl_FragCoord.xy / u_resolution;
+    //uv *= scale(vec2(0.5));
     float t = u_time;
     
     // smoothed interval for which the glitch gets triggered
     float glitchAmount = SS(DURATION * .001, DURATION * AMT, mod(t, DURATION));  
 	float displayNoise = 0.;
-    vec3 col = vec3(0.);
+    vec3 col = texture(scene, uv).rgb;
     vec2 eps = vec2(5. / u_resolution.x, 0.);
     vec2 st = vec2(0.);
 
@@ -110,10 +119,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float distortion = gnoise(vec3(0., y * .01, t * 500.)) * (glitchAmount * 4. + .1);
     distortion *= gnoise(vec3(0., y * .02, t * 250.)) * (glitchAmount * 2. + .025);
 
+    // white noise + scanlines
+    displayNoise = clamp(displayNoise, 0., 1.);
+    //col += (.15 + .65 * glitchAmount) * (hash33(vec3(gl_FragCoord, mod(float(t /* Used to be 'iFrame'*/), 1000.))).r) * displayNoise;
+    col += (.15 + .65 * glitchAmount) * (hash33(vec3(gl_FragCoord.xy, mod(float(u_frame), 1000.))).r) * displayNoise;
+    col -= (.25 + .75 * glitchAmount) * (sin(4. * t + uv.y * u_resolution.y * 1.75)) * displayNoise;
+
     //crt vignette (from https://www.shadertoy.com/view/Ms23DR)
     float vig = 8.0 * uv.x * uv.y * (1.-uv.x) * (1.-uv.y);
 	col *= vec3(pow(vig, .25)) * 1.5;
     if(uv.x < 0. || uv.x > 1.) col *= 0.;
 
-    fragColor = vec4(col, 1.0);
+    gl_FragColor = vec4(col, 1.0);
 }

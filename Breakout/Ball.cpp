@@ -48,7 +48,7 @@ void Ball::update(float dt)
     sf::Vector2u windowDimensions = _window->getSize();
 
     // bounce on walls
-    if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
+    if ((position.x + 50 >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x - 50 <= 0 && _direction.x < 0))
     {
         _direction.x *= -1;
     }

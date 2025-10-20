@@ -34,6 +34,7 @@ private:
     bool _pause;
     float _pauseHold;
     float _time;
+    int _frame = 0;
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;

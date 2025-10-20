@@ -25,7 +25,7 @@ void GameManager::initialize()
     _ui = new UI(_window, &_screen, _lives, this);
 
     // Create bricks
-    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(5, 8, 80.0f, 30.0f, 5.0f);
 
     // NOTE: Set the mouse the center of the window and set the window center variable to this initial mouse position.
     // This is not updated in the game loop as the window has been made to not be resizeable.
@@ -75,6 +75,9 @@ void GameManager::update(float dt)
 
     // timer.
     _time += dt;
+
+    // NOTE: Count frame for shader
+    _frame += 1;
 
 
     if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
@@ -154,6 +157,8 @@ void GameManager::render()
 
     if (_crt == true)
     {
+        _shader.setUniform("u_time", _time);
+        _shader.setUniform("u_frame", _frame);
         _window->draw(screen, &_shader);
     }
     else
@@ -184,7 +189,6 @@ void GameManager::loadShader()
 
     // Reference: https://duerrenberger.dev/blog/2021/08/08/basic-fragment-shader-with-sfml/
     _shader.setUniform("u_resolution", sf::Glsl::Vec2{ _window->getSize()});
-    _shader.setUniform("u_time", _time);
 
     _crt = true;
 }
