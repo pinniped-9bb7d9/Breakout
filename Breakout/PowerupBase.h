@@ -6,7 +6,8 @@
 #include "Ball.h"
 #include <vector>
 
-#include "PowerupFireBall.h"
+// NOTE: Why is the header for a subclass derived from this base class included here?
+//#include "PowerupFireBall.h"
 
 
 class PowerupBase
