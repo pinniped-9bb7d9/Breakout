@@ -21,6 +21,7 @@ public:
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
     void updateMouseSensitivity(float update);
+    void loadShader();
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -41,9 +42,12 @@ private:
     sf::Vector2i _window_center;
     sf::Vector2i _current_mouse_position;
     float _mouse_sensitivity;
+    bool _crt;
 
     sf::Font _font;
     sf::Text _masterText;
+    sf::RenderTexture _screen;
+    sf::Shader _shader;
 
     sf::RenderWindow* _window;
     Paddle* _paddle;

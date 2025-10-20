@@ -22,7 +22,7 @@ fire ball (green)
 ## Suggested tasks
 
 * \[DONE] Implement mouse input for paddle
-* Make paddle sensitivity adjustable with mouse wheel
+* \[DONE] Make paddle sensitivity adjustable with mouse wheel
 * GameLoop
 * Better UI (progress bar rather than timer for countdown)
 * Improved VFX (ball trail, paddle hit response, brick particle destruction)
@@ -35,6 +35,4 @@ fire ball (green)
 # Time Details and Changelist
 
 Forked the original repository and run the project - received a compiler error originated from the 'PowerFireBall' class due to its header file being included in the header file for the 'PowerupBase' class. Removing this include resolved the compiler issue. It took me 5-10 minutes to identify and resolve this issue.
-
-
 

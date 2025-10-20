@@ -13,7 +13,7 @@
 class PowerupBase
 {
 public:
-    PowerupBase(sf::RenderWindow* window, Paddle* paddle, Ball* ball);
+    PowerupBase(sf::RenderWindow* window, sf::RenderTexture* screen, Paddle* paddle, Ball* ball);
     virtual ~PowerupBase();
 
     void update(float dt);
@@ -42,5 +42,5 @@ protected: // Protected so derived classes can access these members
     sf::CircleShape _sprite;
     sf::Color _colour;
     sf::RenderWindow* _window;
-
+    sf::RenderTexture* _screen;
 };

@@ -17,12 +17,12 @@ GameManager::GameManager(sf::RenderWindow* window)
 
 void GameManager::initialize()
 {
-    _paddle = new Paddle(_window);
-    _brickManager = new BrickManager(_window, this);
-    _messagingSystem = new MessagingSystem(_window);
-    _ball = new Ball(_window, 400.0f, this); 
-    _powerupManager = new PowerupManager(_window, _paddle, _ball);
-    _ui = new UI(_window, _lives, this);
+    _paddle = new Paddle(_window, &_screen);
+    _brickManager = new BrickManager(_window, &_screen, this);
+    _messagingSystem = new MessagingSystem(_window, &_screen);
+    _ball = new Ball(_window, &_screen, 400.0f, this);
+    _powerupManager = new PowerupManager(_window, &_screen, _paddle, _ball);
+    _ui = new UI(_window, &_screen, _lives, this);
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
@@ -31,6 +31,7 @@ void GameManager::initialize()
     // This is not updated in the game loop as the window has been made to not be resizeable.
     sf::Mouse::setPosition(sf::Vector2i(_window->getSize().x / 2.f, _window->getSize().y / 2.f), *_window);
     _window_center = sf::Mouse::getPosition();
+    loadShader();
 }
 
 void GameManager::update(float dt)
@@ -136,23 +137,56 @@ void GameManager::loseLife()
 
 void GameManager::render()
 {
+    _screen.create(_window->getSize().x, _window->getSize().y);
+    _screen.clear();
+
     _paddle->render();
     _ball->render();
     _brickManager->render();
     _powerupManager->render();
-    _window->draw(_masterText);
+    //_window->draw(_masterText);
+    _screen.draw(_masterText);
     _ui->render();
+
+    _screen.display();
+    // NOTE: Render texture has to be made into a sprite before it can be rendered to the window!
+    sf::Sprite screen(_screen.getTexture());
+
+    if (_crt == true)
+    {
+        _window->draw(screen, &_shader);
+    }
+    else
+    {
+        _window->draw(screen);
+    }
 }
 
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+    // NOTE: The player can freely move the mouse once the game is complete - so they should be able to see it!
+    _window->setMouseCursorVisible(true);
 }
 
 void GameManager::updateMouseSensitivity(float update)
 {
     // TODO: This is very naive and will definitely break!
     _mouse_sensitivity = std::clamp(_mouse_sensitivity += update, 0.1f, 2.0f);
+}
+
+void GameManager::loadShader()
+{
+    if (!_shader.loadFromFile("crt.frag", sf::Shader::Fragment)) {
+        _crt = false;
+        return;
+    }
+
+    // Reference: https://duerrenberger.dev/blog/2021/08/08/basic-fragment-shader-with-sfml/
+    _shader.setUniform("u_resolution", sf::Glsl::Vec2{ _window->getSize()});
+    _shader.setUniform("u_time", _time);
+
+    _crt = true;
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

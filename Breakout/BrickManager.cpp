@@ -1,8 +1,8 @@
 #include "BrickManager.h"
 #include "GameManager.h"
 
-BrickManager::BrickManager(sf::RenderWindow* window, GameManager* gameManager)
-    : _window(window), _gameManager(gameManager)
+BrickManager::BrickManager(sf::RenderWindow* window, sf::RenderTexture* screen, GameManager* gameManager)
+    : _window(window), _screen(screen), _gameManager(gameManager)
 {
 }
 
@@ -26,7 +26,8 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
 void BrickManager::render()
 {
     for (auto& brick : _bricks) {
-        brick.render(*_window);
+        //brick.render(*_window);
+        brick.render(*_window, *_screen);
     }
 }
 

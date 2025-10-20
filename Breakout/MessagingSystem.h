@@ -6,7 +6,7 @@
 class MessagingSystem
 {
 public:
-	MessagingSystem(sf::RenderWindow* window);
+	MessagingSystem(sf::RenderWindow* window, sf::RenderTexture* screen);
 	~MessagingSystem();
 
 	void update(float dt);
@@ -17,6 +17,7 @@ public:
 private:
 
 	sf::RenderWindow* _window;
+	sf::RenderTexture* _screen;
 
 	sf::Text _message;
 	sf::Font _font;

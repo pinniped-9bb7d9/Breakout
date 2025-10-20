@@ -4,8 +4,8 @@
 #include "GameManager.h"
 #include <iomanip>
 
-UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager) 
-	: _window(window), _gameManager(gameManager)
+UI::UI(sf::RenderWindow* window, sf::RenderTexture* screen, int lives, GameManager* gameManager) 
+	: _window(window), _screen(screen), _gameManager(gameManager)
 {
 	for (int i = lives; i > 0; --i)
 	{
@@ -74,9 +74,11 @@ void UI::lifeLost(int lives)
 
 void UI::render()
 {
-	_window->draw(_powerupText);
+	//_window->draw(_powerupText);
+	_screen->draw(_powerupText);
 	for (sf::CircleShape life : _lives)
 	{
-		_window->draw(life);
+		//_window->draw(life);
+		_screen->draw(life);
 	}
 }

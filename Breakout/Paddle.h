@@ -6,7 +6,7 @@
 class Paddle
 {
 public:
-    Paddle(sf::RenderWindow* window);
+    Paddle(sf::RenderWindow* window, sf::RenderTexture* screen);
     ~Paddle();
 
     void moveLeft(float dt);
@@ -20,6 +20,7 @@ private:
 
 
     sf::RenderWindow* _window;
+    sf::RenderTexture* _screen;
     sf::RectangleShape _sprite;
     float _width = PADDLE_WIDTH;
     bool _isAlive;

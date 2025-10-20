@@ -1,8 +1,8 @@
 #include "Paddle.h"
 #include <iostream>
 
-Paddle::Paddle(sf::RenderWindow* window)
-    : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
+Paddle::Paddle(sf::RenderWindow* window, sf::RenderTexture* screen)
+    : _window(window), _screen(screen), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
 {
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition((window->getSize().x - _width) / 2.0f, window->getSize().y - 50.0f);
@@ -49,7 +49,8 @@ void Paddle::update(float dt)
 
 void Paddle::render()
 {
-    _window->draw(_sprite);
+    //_window->draw(_sprite);
+    _screen->draw(_sprite);
 }
 
 sf::FloatRect Paddle::getBounds() const

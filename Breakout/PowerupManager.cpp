@@ -1,8 +1,8 @@
 #include "PowerupManager.h"
 
 
-PowerupManager::PowerupManager(sf::RenderWindow* window, Paddle* paddle, Ball* ball)
-    : _window(window), _paddle(paddle), _ball(ball)
+PowerupManager::PowerupManager(sf::RenderWindow* window, sf::RenderTexture* screen, Paddle* paddle, Ball* ball)
+    : _window(window), _screen(screen), _paddle(paddle), _ball(ball)
 {
 }
 
@@ -61,19 +61,19 @@ void PowerupManager::spawnPowerup()
     switch (rand() % 5)
     {
     case 0:
-        _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ball));
+        _powerups.push_back(new PowerupBigPaddle(_window, _screen, _paddle, _ball));
         break;
     case 1:
-        _powerups.push_back(new PowerupSlowBall(_window, _paddle, _ball));
+        _powerups.push_back(new PowerupSlowBall(_window, _screen, _paddle, _ball));
         break;
     case 2:
-        _powerups.push_back(new PowerupFastBall(_window, _paddle, _ball));
+        _powerups.push_back(new PowerupFastBall(_window, _screen, _paddle, _ball));
         break;
     case 3:
-        _powerups.push_back(new PowerupSmallPaddle(_window, _paddle, _ball));
+        _powerups.push_back(new PowerupSmallPaddle(_window, _screen, _paddle, _ball));
         break;
     case 4:
-        _powerups.push_back(new PowerupFireBall(_window, _paddle, _ball));
+        _powerups.push_back(new PowerupFireBall(_window, _screen, _paddle, _ball));
         break;
     case 5:
        break;

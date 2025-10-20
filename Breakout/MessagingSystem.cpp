@@ -1,8 +1,9 @@
 #include "MessagingSystem.h"
 
-MessagingSystem::MessagingSystem(sf::RenderWindow* window)
+MessagingSystem::MessagingSystem(sf::RenderWindow* window, sf::RenderTexture* screen)
 {
 	_window = window;
+	_screen = screen;
 	_message.setCharacterSize(24);
 	_font.loadFromFile("font/montS.ttf");
 	_message.setFont(_font);
@@ -35,7 +36,8 @@ void MessagingSystem::update(float dt)
 
 void MessagingSystem::render()
 {
-	_window->draw(_message);
+	//_window->draw(_message);
+	_screen->draw(_message);
 }
 
 // update alert with str <message> for float <timeToDisplay> in seconds.
