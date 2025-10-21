@@ -36,5 +36,19 @@ fire ball (green)
 
 # Time Details and Changelist
 
-(0010) Forked the original repository and run the project - received a compiler error originated from the 'PowerFireBall' class due to its header file being included in the header file for the 'PowerupBase' class. Removing this include resolved the compiler issue.
+(00:10) Forked the original repository and run the project - received a compiler error originated from the 'PowerFireBall' class due to its header file being included in the header file for the 'PowerupBase' class. Removing this include resolved the compiler issue
+
+(01:00) Implemented mouse input for paddle
+
+(1:45) Adjustable mouse sensitivity using the mouse wheel
+
+(3:30) Implemented render texture and ported CRT shader from ShaderToy
+
+(3:50) Adjusted UI and game scene to fit within CRT shader vignette
+
+(4:10) Implemented game loop
+
+(5:00) Implemented screen shake when player loses a life
+
+(5:20) Implemented new basic powerup (Flash Ball)
 
