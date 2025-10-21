@@ -4,8 +4,10 @@ W Kavanagh \& N Merchant. Summer 2024
 
 ## controls
 
-A/D to move the paddle right and left.
+Move the mouse right to left to move the paddle right and left.
 P to pause.
+
+Enter to reply.
 
 ## Powerups
 
@@ -23,7 +25,7 @@ fire ball (green)
 
 * \[DONE] Implement mouse input for paddle
 * \[DONE] Make paddle sensitivity adjustable with mouse wheel
-* GameLoop
+* \[DONE] GameLoop
 * Better UI (progress bar rather than timer for countdown)
 * Improved VFX (ball trail, paddle hit response, brick particle destruction)
 * Leaderboards
@@ -34,5 +36,5 @@ fire ball (green)
 
 # Time Details and Changelist
 
-Forked the original repository and run the project - received a compiler error originated from the 'PowerFireBall' class due to its header file being included in the header file for the 'PowerupBase' class. Removing this include resolved the compiler issue. It took me 5-10 minutes to identify and resolve this issue.
+(0010) Forked the original repository and run the project - received a compiler error originated from the 'PowerFireBall' class due to its header file being included in the header file for the 'PowerupBase' class. Removing this include resolved the compiler issue.
 

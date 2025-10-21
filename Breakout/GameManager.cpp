@@ -6,7 +6,7 @@
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f), _window_center(0.f, 0.f), _current_mouse_position(0.f, 0.f), _mouse_sensitivity(1.f)
+    _powerup_spawn_odds(700), _shake(false), _shake_time(0.5f), _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f), _window_center(0.f, 0.f), _current_mouse_position(0.f, 0.f), _mouse_sensitivity(1.f)
 {
     _font.loadFromFile("font/montS.ttf");
     _masterText.setFont(_font);
@@ -17,6 +17,14 @@ GameManager::GameManager(sf::RenderWindow* window)
 
 void GameManager::initialize()
 {
+    // NOTE: Set the mouse cursor to invisible to hide the fact it is being moved back into the center of the window every frame.
+    _window->setMouseCursorVisible(false);
+    _masterText.setString("");
+    _levelComplete = false;
+    _lives = 3;
+    _shake = false;
+    _shake_trigger_time = 0.f;
+
     _paddle = new Paddle(_window, &_screen);
     _brickManager = new BrickManager(_window, &_screen, this);
     _messagingSystem = new MessagingSystem(_window, &_screen);
@@ -29,6 +37,7 @@ void GameManager::initialize()
 
     // NOTE: Set the mouse the center of the window and set the window center variable to this initial mouse position.
     // This is not updated in the game loop as the window has been made to not be resizeable.
+    _window->setPosition(sf::Vector2i(100.f, 100.f));
     sf::Mouse::setPosition(sf::Vector2i(_window->getSize().x / 2.f, _window->getSize().y / 2.f), *_window);
     _window_center = sf::Mouse::getPosition();
     loadShader();
@@ -43,12 +52,17 @@ void GameManager::update(float dt)
 
     if (_lives <= 0)
     {
-        _masterText.setString("Game over.");
+        _masterText.setString("Game over.\nPress Enter to Reply!");
+        // NOTE: The player can freely move the mouse once the game is over - so they should be able to see it!
+        _window->setMouseCursorVisible(true);
+        manageReplyInput();
         return;
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
+        _masterText.setString("Level completed.\nPress Enter to Reply!");
+        _window->setMouseCursorVisible(true);
+        manageReplyInput();
         return;
     }
     // pause and pause handling
@@ -60,12 +74,14 @@ void GameManager::update(float dt)
             _pause = true;
             _masterText.setString("paused.");
             _pauseHold = PAUSE_TIME_BUFFER;
+            _window->setMouseCursorVisible(true);
         }
         if (_pause && _pauseHold <= 0.f)
         {
             _pause = false;
             _masterText.setString("");
             _pauseHold = PAUSE_TIME_BUFFER;
+            _window->setMouseCursorVisible(false);
         }
     }
     if (_pause)
@@ -79,14 +95,9 @@ void GameManager::update(float dt)
     // NOTE: Count frame for shader
     _frame += 1;
 
+    powerupSpawn(_powerup_spawn_odds);
 
-    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
-    {
-        _powerupManager->spawnPowerup();
-        _timeLastPowerupSpawned = _time;
-    }
-
-    manageInput(dt);
+    manageMouseInput(dt);
 
     sf::Mouse::setPosition(sf::Vector2i(500.f, 400.f), *_window);
     //_previous_mouse_position = _current_mouse_position;
@@ -97,7 +108,16 @@ void GameManager::update(float dt)
     _powerupManager->update(dt);
 }
 
-void GameManager::manageInput(float dt)
+void GameManager::powerupSpawn(int odds)
+{
+    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand() % odds == 0)
+    {
+        _powerupManager->spawnPowerup();
+        _timeLastPowerupSpawned = _time;
+    }
+}
+
+void GameManager::manageMouseInput(float dt)
 {
     // move paddle
     //if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
@@ -130,12 +150,29 @@ void GameManager::manageInput(float dt)
 
 }
 
+void GameManager::manageReplyInput()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    {
+        delete _paddle;
+        delete _brickManager;
+        delete _messagingSystem;
+        delete _ball;
+        delete _powerupManager;
+        delete _ui;
+
+        initialize();
+    }
+}
+
 void GameManager::loseLife()
 {
     _lives--;
     _ui->lifeLost(_lives);
 
     // TODO screen shake.
+    _shake = true;
+    _shake_trigger_time = _time;
 }
 
 void GameManager::render()
@@ -155,6 +192,21 @@ void GameManager::render()
     // NOTE: Render texture has to be made into a sprite before it can be rendered to the window!
     sf::Sprite screen(_screen.getTexture());
 
+    if (_shake == true && !_levelComplete && _lives > 0)
+    {
+        // Shaking the window instead of the screen due to the shader
+        // Reference: https://en.sfml-dev.org/forums/index.php?topic=12159.msg84431#msg84431
+        _window->setPosition(sf::Vector2i(100 + rand() % 25, 100 + rand() % 25));
+        sf::Mouse::setPosition(sf::Vector2i(_window->getSize().x / 2.f, _window->getSize().y / 2.f), *_window);
+        _window_center = sf::Mouse::getPosition();
+        //screen.setPosition(sf::Vector2f(rand() % 25, rand() % 25));
+
+        if (_time - _shake_trigger_time >= _shake_time)
+        {
+            _shake = false;
+        }
+    }
+
     if (_crt == true)
     {
         _shader.setUniform("u_time", _time);
@@ -170,13 +222,10 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
-    // NOTE: The player can freely move the mouse once the game is complete - so they should be able to see it!
-    _window->setMouseCursorVisible(true);
 }
 
 void GameManager::updateMouseSensitivity(float update)
 {
-    // TODO: This is very naive and will definitely break!
     _mouse_sensitivity = std::clamp(_mouse_sensitivity += update, 0.1f, 2.0f);
 }
 

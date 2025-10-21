@@ -17,7 +17,9 @@ PowerupFireBall::~PowerupFireBall()
         // use my pointer to do things.
     }
 
-
+    // NOTE: Removed memory leak
+    delete pInteger;
+    pInteger = nullptr;
     
 }
 

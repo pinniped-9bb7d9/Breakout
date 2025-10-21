@@ -12,14 +12,14 @@ UI::UI(sf::RenderWindow* window, sf::RenderTexture* screen, int lives, GameManag
 		sf::CircleShape newLife;
 		newLife.setFillColor(sf::Color::Red);	
 		newLife.setOutlineColor(sf::Color::Cyan);
-		newLife.setOutlineThickness(4.0f);
+		newLife.setOutlineThickness(2.0f);
 		newLife.setRadius(LIFE_RADIUS);
-		newLife.setPosition((LIFE_RADIUS*2 + LIFE_PADDING) * i, LIFE_PADDING);
+		newLife.setPosition(((LIFE_RADIUS*2 + LIFE_PADDING) * i) + 100.f, LIFE_PADDING*3);
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
 	// TODO: Adjust Life UI Location
-	_powerupText.setPosition(800, 10);
+	_powerupText.setPosition(700,60);
 	_powerupText.setFillColor(sf::Color::Cyan);
 	_font.loadFromFile("font/montS.ttf");
 	_powerupText.setFont(_font);

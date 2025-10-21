@@ -8,8 +8,6 @@ int main()
     // NOTE: Set the window size to be fixed as resizes the window causes issues for input and physics.
     sf::RenderWindow window(sf::VideoMode(1000, 800), "Breakout", sf::Style::Titlebar | sf::Style::Close);
     //window.setSize(sf::Vector2u(1000, 800));
-    // NOTE: Set the mouse cursor to invisible to hide the fact it is being moved back into the center of the window every frame.
-    window.setMouseCursorVisible(false);
     GameManager gameManager(&window);
     gameManager.initialize();
 

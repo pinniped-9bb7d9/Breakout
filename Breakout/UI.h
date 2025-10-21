@@ -27,7 +27,7 @@ private:
 
 	std::vector<sf::CircleShape> _lives;
 
-	static constexpr float LIFE_RADIUS = 15.0f;
+	static constexpr float LIFE_RADIUS = 10.0f;
 	static constexpr float LIFE_PADDING = 20.0f;
 };
 

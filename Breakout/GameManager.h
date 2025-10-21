@@ -15,7 +15,8 @@ public:
     GameManager(sf::RenderWindow* window);
     void initialize();
     void update(float dt);
-    void manageInput(float dt);
+    void manageMouseInput(float dt);
+    void manageReplyInput();
     void loseLife();
     void render();
     void levelComplete();
@@ -38,6 +39,9 @@ private:
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;
+    bool _shake;
+    float _shake_time;
+    float _shake_trigger_time;
     std::pair<POWERUPS, float> _powerupInEffect;
     // NOTE: Vector for tracking mouse position
     sf::Vector2i _window_center;
