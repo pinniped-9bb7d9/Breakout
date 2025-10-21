@@ -21,6 +21,7 @@ public:
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
+    void powerupSpawn(int m);
     void updateMouseSensitivity(float update);
     void loadShader();
 
@@ -39,6 +40,7 @@ private:
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;
+    int _powerup_spawn_odds;
     bool _shake;
     float _shake_time;
     float _shake_trigger_time;

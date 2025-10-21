@@ -18,7 +18,6 @@ UI::UI(sf::RenderWindow* window, sf::RenderTexture* screen, int lives, GameManag
 		_lives.push_back(newLife);
 	}
 	_powerupText.setCharacterSize(30);
-	// TODO: Adjust Life UI Location
 	_powerupText.setPosition(700,60);
 	_powerupText.setFillColor(sf::Color::Cyan);
 	_font.loadFromFile("font/montS.ttf");
@@ -61,10 +60,13 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 		_powerupText.setString("fire " + oss.str());
 		_powerupText.setFillColor(extraBallEffectsColour);
 		break;
+	case flashBall:
+		oss << std::fixed << std::setprecision(2) << powerup.second;
+		_powerupText.setString("flash " + oss.str());
+		_powerupText.setFillColor(ballEffectsColour);
+		break;
 	case none:
 		_powerupText.setString("");
-		
-		break;
 	}
 }
 

@@ -123,7 +123,6 @@ void GameManager::manageMouseInput(float dt)
     //if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
     //if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
 
-    // TODO: move paddle based on mouse input
     _current_mouse_position = sf::Mouse::getPosition();
 
 
@@ -170,7 +169,6 @@ void GameManager::loseLife()
     _lives--;
     _ui->lifeLost(_lives);
 
-    // TODO screen shake.
     _shake = true;
     _shake_trigger_time = _time;
 }
