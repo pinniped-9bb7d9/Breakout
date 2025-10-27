@@ -13,5 +13,5 @@ PowerupFlashBall::~PowerupFlashBall()
 std::pair<POWERUPS, float> PowerupFlashBall::applyEffect()
 {
     _ball->setVelocity(3.f, 7.5f);
-    return { flashBall, 5.0f };
+    return { flashBall, POWERUP_DURATION };
 }

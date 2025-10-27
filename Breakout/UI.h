@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "CONSTANTS.h"
 #include "PowerupManager.h"
+#include "ProgressBar.h"
 
 class GameManager;
 
@@ -14,10 +16,14 @@ public:
 	~UI();
 
 	void updatePowerupText(std::pair<POWERUPS, float>);
+	void updatePowerupBar(std::pair<POWERUPS, float>);
+	float calculatePowerupBarHealth(float time);
 	void lifeLost(int lives);
 	void render();
 
 private:
+	ProgressBar* _powerupBar;
+
 	GameManager* _gameManager;
 	
 	sf::RenderWindow* _window;

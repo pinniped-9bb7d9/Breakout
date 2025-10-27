@@ -28,6 +28,7 @@ public:
     std::pair<POWERUPS, float> getPowerupInEffect();
 
 private:
+
     sf::RenderWindow* _window;
     sf::RenderTexture* _screen;
     Paddle* _paddle;
