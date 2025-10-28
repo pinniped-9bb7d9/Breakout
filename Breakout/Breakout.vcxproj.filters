@@ -69,6 +69,9 @@
     <ClCompile Include="PowerupFlashBall.cpp">
       <Filter>Powerups</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="PowerupFlashBall.h">
       <Filter>Powerups</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
